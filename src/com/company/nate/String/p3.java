@@ -10,15 +10,15 @@ public class p3 {
             return 0;
         }
 
-        for (int i = 0; i < arr.length - 1; i++) {
+        for (int i = 0; i < arr.length; i++) {
 
             char target = arr[i];
 
             boolean hasSame = false;
 
-            for (int j = i + 1; j < arr.length; j++) {
+            for (int j = 0; j < arr.length; j++) {
 
-                if (target == arr[j]) {
+                if (target == arr[j] && i != j) {
                     hasSame = true;
                     break;
                 }
@@ -36,7 +36,7 @@ public class p3 {
 
     public static void main(String[] args) {
 
-        int str =  firstUniqChar("c");
+        int str =  firstUniqChar("dddccdbba");
         System.out.println(str);
     }
 }
