@@ -5,71 +5,25 @@ public class p44 {
 
     static public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
+        ListNode head;
 
-        if (l1 == null) {
-            return l2;
-        }
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
 
-        if (l2 == null) {
-            return l1;
-        }
+        if (l1.val < l2.val) {
 
-        ListNode node;
+            head = l1;
+            head.next = mergeTwoLists(l1.next, l2);
 
-        if (l1.val > l2.val) {
-            node = l2;
-            node.next = l1;
         } else {
-            node = l1;
-            node.next = l2;
+
+            head = l2;
+            head.next = mergeTwoLists(l2.next, l1);
+
         }
 
-        ListNode node1 = l1.next;
-        ListNode node2 = l2.next;
 
-        ListNode headNode = node;
-
-        while (node1 != null || node2 != null) {
-
-            if (node1 == null) {
-               node.next = node2 ;
-
-                node1 = node1.next;
-                node2 = node2.next;
-
-                node.next.next = null;
-                continue;
-            }
-
-            if (node2 == null) {
-                node.next = node1;
-
-                node1 = node1.next;
-                node2 = node2.next;
-
-                node.next.next = null;
-                continue;
-            }
-
-            if (node1.val > node2.val) {
-                node.next = node2 ;
-                node.next.next = node1;
-
-                node1 = node1.next;
-                node2 = node2.next;
-                node.next.next = null;
-            } else {
-                node.next = node1;
-                node.next.next = node2;
-
-                node1 = node1.next;
-                node2 = node2.next;
-
-                node.next.next = null;
-            }
-        }
-
-        return headNode;
+        return head;
     }
 
     public static void main(String[] args) {
