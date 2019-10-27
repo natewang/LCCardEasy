@@ -59,6 +59,10 @@ public class p47 {
 
         int maxDepth = maxDepth(root);
         System.out.println(maxDepth);
+
+
+        TreeNode node = BTreePrinter.stringToTreeNode("[3, 9, 20, null, null, 15, 7]");
+        BTreePrinter.prettyPrintTree(node);
     }
 
 }

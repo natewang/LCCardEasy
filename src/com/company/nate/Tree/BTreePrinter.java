@@ -1,62 +1,95 @@
 package com.company.nate.Tree;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
+
 
 public class BTreePrinter {
 
-    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
-
-        ArrayList<ArrayList<Integer>> resArr = new ArrayList();
-        //直接借助java体系的stack类
-        Stack<TreeNode> s1 = new Stack();
-        Stack<TreeNode> s2 = new Stack();
-        if(pRoot==null){
-            return resArr;
+    public static String treeNodeToString(TreeNode root) {
+        if (root == null) {
+            return "[]";
         }
-        s1.push(pRoot);
 
-        //终止的条件是两个栈全为空，说明全部处理完成
-        while (s1.size() != 0 || s2.size() != 0) {
-            //s1每个出栈元素,先压左节点到B,再压右节点到B,具体看题目要求
-            ArrayList<Integer> tmpA = new ArrayList<>();
+        String output = "";
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.add(root);
+        while(!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.remove();
 
-            while (s1.size() != 0) {
-                TreeNode top = s1.pop();
-                tmpA.add(top.val);
-
-                //左右子节点入B栈
-                if (top.left != null) {
-                    s2.push(top.left);
-                }
-                if (top.right != null) {
-                    s2.push(top.right);
-                }
-            }
-            //加入到resArr之前一定要判断是否为空
-            if(tmpA.size()>0){
-                resArr.add(tmpA);
+            if (node == null) {
+                output += "null, ";
+                continue;
             }
 
-            //压入顺序与A相反
-            ArrayList<Integer> tmpB = new ArrayList<>();
-            while (s2.size() != 0) {
-                TreeNode top = s2.pop();
-                tmpB.add(top.val);
-
-                if (top.right != null) {
-                    s1.push(top.right);
-                }
-                if (top.left != null) {
-                    s1.push(top.left);
-                }
-            }
-            //加入到resArr之前一定要判断是否为空
-            if(tmpB.size()>0){
-                resArr.add(tmpB);
-            }
+            output += String.valueOf(node.val) + ", ";
+            nodeQueue.add(node.left);
+            nodeQueue.add(node.right);
         }
-        return resArr;
+        return "[" + output.substring(0, output.length() - 2) + "]";
     }
 
+    public static TreeNode stringToTreeNode(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+            return null;
+        }
+
+        String[] parts = input.split(",");
+        String item = parts[0];
+        TreeNode root = new TreeNode(Integer.parseInt(item));
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.add(root);
+
+        int index = 1;
+        while(!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.remove();
+
+            if (index == parts.length) {
+                break;
+            }
+
+            item = parts[index++];
+            item = item.trim();
+            if (!item.equals("null")) {
+                int leftNumber = Integer.parseInt(item);
+                node.left = new TreeNode(leftNumber);
+                nodeQueue.add(node.left);
+            }
+
+            if (index == parts.length) {
+                break;
+            }
+
+            item = parts[index++];
+            item = item.trim();
+            if (!item.equals("null")) {
+                int rightNumber = Integer.parseInt(item);
+                node.right = new TreeNode(rightNumber);
+                nodeQueue.add(node.right);
+            }
+        }
+        return root;
+    }
+
+    public static void prettyPrintTree(TreeNode node, String prefix, boolean isLeft) {
+        if (node == null) {
+            System.out.println("Empty tree");
+            return;
+        }
+
+        if (node.right != null) {
+            prettyPrintTree(node.right, prefix + (isLeft ? "│   " : "    "), false);
+        }
+
+        System.out.println(prefix + (isLeft ? "└── " : "┌── ") + node.val);
+
+        if (node.left != null) {
+            prettyPrintTree(node.left, prefix + (isLeft ? "    " : "│   "), true);
+        }
+    }
+
+    public static void prettyPrintTree(TreeNode node) {
+        prettyPrintTree(node,  "", true);
+    }
 
 }
