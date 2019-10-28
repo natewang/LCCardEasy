@@ -20,14 +20,53 @@ package com.company.nate.Tree;
 ]*/
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class p50 {
 
     public static List<List<Integer>> levelOrder(TreeNode root) {
 
+        //使用队列收集下层的节点，并打印当前节点
+        List<List<Integer>> res = new LinkedList<>();
 
-        return null;
+        if (root == null) {
+            return res;
+        }
+
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+
+            Integer size = queue.size();
+            //获取下层
+            LinkedList currentRes = new LinkedList();
+
+            LinkedList<Integer> valRes = new LinkedList();
+
+
+            while (size > 0) {
+
+                TreeNode current = queue.poll();
+                valRes.add(current.val);
+
+                if (current.left != null) {
+                    currentRes.add(current.left);
+                }
+
+                if (current.right != null) {
+                    currentRes.add(current.right);
+                }
+
+                size--;
+            }
+
+            queue.addAll(currentRes);
+            res.add(valRes);
+        }
+
+        return res;
     }
 
 
