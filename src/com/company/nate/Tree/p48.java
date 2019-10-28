@@ -26,39 +26,39 @@ public class p48 {
             return true;
         }
 
-        return recursiveBST(root.left, root.val, true) && recursiveBST(root.right, root.val, false);
+        return recursiveBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
 
     }
 
-    public static  boolean recursiveBST(TreeNode root, int lastVal, boolean inLeft) {
+    public static  boolean recursiveBST(TreeNode root, long low, long high) {
 
         if (root == null) {
             return true;
         }
 
-        if (inLeft && root.val >= lastVal) {
+        if (root.val >= high || root.val <= low) {
             return false;
         }
 
-        if (!inLeft && root.val <= lastVal) {
-            return false;
+        if (root.left == null && root.right == null) {
+            return true;
         }
 
-        if (root.left != null && (root.left.val >= root.val || root.left.val <= lastVal)) {
-            return false;
+        if (root.left == null && root.right != null) {
+            return recursiveBST(root.right, root.val, high);
         }
 
-        if (root.right != null && (root.right.val <= root.val || root.right.val >= lastVal)) {
-            return false;
+        if (root.right == null && root.left != null) {
+            return recursiveBST(root.left,low, root.val);
         }
 
-        return true;
+        return recursiveBST(root.left,low, root.val) && recursiveBST(root.right, root.val, high);
     }
 
 
     public static void main(String[] args) {
 
-        String str = "[5,1,4,null,null,3,6]";
+        String str = "[1,null,1]";
         TreeNode root = BTreePrinter.stringToTreeNode(str);
 
         BTreePrinter.prettyPrintTree(root);
