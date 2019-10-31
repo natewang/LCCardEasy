@@ -23,15 +23,37 @@ package com.company.nate.Dynamic;
 2.  1 阶 + 2 阶
 3.  2 阶 + 1 阶
 
+f(n) = f(n-1)+ f(n-2)
+
+
 * */
 
 public class p54 {
 
     public static int climbStairs(int n) {
 
+        if (n == 0) {
+            return 0;
+        }
 
+        if (n == 1) {
+            return  1;
+        }
 
-        return 0;
+        if (n == 2) {
+            return 2;
+        }
+
+        int[] sum = new int[n];
+        sum[0] = 1;
+        sum[1] = 2;
+
+        for (int i = 2; i < n; i++) {
+
+            sum[i] = sum[i-1] + sum[i-2];
+        }
+
+        return sum[n-1];
     }
 
     public static void main(String[] args) {
